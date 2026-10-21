@@ -1,13 +1,13 @@
 {
-  "planHash": "64ec75750218fb89d534d38831c4f3780cebf1f505ffbeea34f87d595c5312be",
+  "planHash": "7aeefaab7e314ec69f8cddfc4d6228f22d9851f7a3927e94d59d7010c2ddc9fb",
   "phase": "standalone",
-  "recordedAtUtc": "2026-10-21T13:59:16.6666222Z",
+  "recordedAtUtc": "2026-10-21T21:29:13.7468607Z",
   "retryCount": 0,
   "resetBaseline": false,
   "complete": true,
   "result": {
     "setupSucceeded": true,
-    "setupDurationMs": 4669,
+    "setupDurationMs": 4612,
     "setupFailureOutput": null,
     "assertions": [
       {
@@ -20,7 +20,7 @@
         "skippedReason": null,
         "exitCode": 0,
         "outputSample": "",
-        "durationMs": 2689
+        "durationMs": 2784
       },
       {
         "name": "tests-pass",
@@ -31,8 +31,8 @@
         "skipped": false,
         "skippedReason": null,
         "exitCode": 0,
-        "outputSample": "\u25C7 injected env (7) from .env.qa\r\n\r\nRunning 2 tests using 2 workers\r\n\r\n\r\n\u25C7 injected env (0) from .env.qa\r\n[1/2] [chromium] \u203A tests\\logout.spec.ts:7:5 \u203A should log out and navigate to the login page\r\n\u25C7 injected env (0) from .env.qa\r\n\r\n[2/2] [chromium] \u203A tests\\login.spec.ts:7:5 \u203A should log in and navigate to the inventory page\r\n  2 passed (3.4s)\r\n",
-        "durationMs": 5660,
+        "outputSample": "\u25C7 injected env (7) from .env.qa\r\n\r\nRunning 6 tests using 6 workers\r\n\r\n\u25C7 injected env (0) from .env.qa\r\n\r\n\u25C7 injected env (0) from .env.qa\r\n\r\n\u25C7 injected env (0) from .env.qa\r\n\r\n[1/6] [chromium] \u203A tests\\purchase-flow.spec.ts:31:7 \u203A HU-01: Flujo de Compra \u203A HU01-CP-01 agrega un producto y actualiza la insignia del carrito\r\n\r\n\u25C7 injected env (0) from .env.qa\r\n[2/6] [chromium] \u203A tests\\api\\purchase-flow.api.spec.ts:9:7 \u203A API de soporte HU-01 \u2014 DummyJSON \u203A HU01-API-01 obtiene y mapea los datos de un producto\r\n[3/6] [chromium] \u203A tests\\api\\purchase-flow.api.spec.ts:28:7 \u203A API de soporte HU-01 \u2014 DummyJSON \u203A HU01-API-02 crea un carrito con el producto obtenido\r\n\r\n\u25C7 injected env (0) from .env.qa\r\n[4/6] [chromium] \u203A tests\\purchase-flow.spec.ts:41:7 \u203A HU-01: Flujo de Compra \u203A HU01-CP-02 muestra el producto agregado en el carrito\r\n\u25C7 injected env (0) from .env.qa\r\n\r\n[5/6] [chromium] \u203A tests\\purchase-flow.spec.ts:50:7 \u203A HU-01: Flujo de Compra \u203A HU01-CP-03 permite agregar varios productos al carrito\r\n[6/6] [chromium] \u203A tests\\purchase-flow.spec.ts:61:7 \u203A HU-01: Flujo de Compra \u203A HU01-CP-04 completa una compra y muestra la confirmaci\u00F3n\r\n  6 passed (6.7s)\r\n",
+        "durationMs": 8955,
         "testResults": {
           "testFramework": "unknown",
           "runnerDetectedFrom": "none",
@@ -76,8 +76,8 @@
         "args": [
           "playwright",
           "test",
-          "tests/login.spec.ts",
-          "tests/logout.spec.ts",
+          "tests/purchase-flow.spec.ts",
+          "tests/api/purchase-flow.api.spec.ts",
           "--project=chromium"
         ],
         "cwd": "c:\\workspace\\js_ts\\nexosd5",

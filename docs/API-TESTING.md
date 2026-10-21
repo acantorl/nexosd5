@@ -1,209 +1,154 @@
-# 🌐 API Testing con Apidog
+# Pruebas API de soporte para HU-01
 
-## 🎯 Objetivo
-Complementar la automatización UI desarrollada en Playwright mediante pruebas API utilizando Apidog y una API pública de pruebas.
+## 1. Propósito y alcance
 
-La automatización UI fue implementada sobre SauceDemo, mientras que la automatización API se realizó utilizando DummyJSON para demostrar validación de servicios REST, respuestas HTTP y generación de casos de prueba mediante Inteligencia Artificial.
+Esta suite complementa la automatización UI de HU-01 con pruebas del catálogo y del carrito mediante [DummyJSON](https://dummyjson.com).
 
----
+La prueba UI de SauceDemo está en `tests/purchase-flow.spec.ts`; las pruebas API están en `tests/api/purchase-flow.api.spec.ts`. **DummyJSON no es el backend de SauceDemo**. Son aplicaciones independientes: las pruebas API no comprueban integración, sincronización de inventario ni persistencia de compras en SauceDemo. DummyJSON simula la operación de añadir al carrito para practicar y validar el contrato REST.
 
-## 🛠️ Herramientas Utilizadas
-* Apidog
-* DummyJSON
-* Playwright
-* GitHub
-* GitHub Actions
-* Inteligencia Artificial de Apidog
+## 2. Casos y resultados
 
----
+| ID | Caso | Método y endpoint | Resultado informado en Apidog |
+|---|---|---|---|
+| HU01-API-01 | Consultar y mapear un producto | `GET /products/1` | `200 OK` |
+| HU01-API-02 | Agregar un producto al carrito | `POST /carts/add` | `201 Created` |
 
-## 💡 Justificación de la API Utilizada
+La última ejecución automatizada registrada para la suite completa del proyecto reportó **6 pruebas aprobadas**, incluidas las dos pruebas API y las cuatro pruebas UI. El reporte automático reconoció la salida de Playwright como exitosa, aunque su parser de conteos no identificó el framework (`testFramework: unknown`, `parseFailed: true`).
 
-Durante la automatización de SauceDemo se realizó una inspección del tráfico de red utilizando Playwright con el objetivo de identificar los endpoints consumidos por la aplicación.
+> **Aclaración de endpoint:** el resultado `201` corresponde a `POST https://dummyjson.com/carts/add`. `GET /products/1` es la consulta del producto y su resultado informado es `200`.
 
-Se analizaron los flujos de:
-* Inicio de sesión
-* Visualización de inventario
-* Adición de productos al carrito
-* Proceso de checkout
-* Confirmación de compra
+## 3. HU01-API-01 — Consultar y mapear un producto
 
-Sin embargo, el análisis evidenció principalmente recursos estáticos como:
-* HTML
-* CSS
-* JavaScript
-* Imágenes
-* Fuentes
+### Request
 
-sin exponer de forma clara endpoints REST de negocio reutilizables para pruebas API independientes.
+```http
+GET https://dummyjson.com/products/1
+```
 
-Por esta razón se decidió utilizar la API pública:
-https://dummyjson.com
+### Respuesta observada en Apidog
 
-La API DummyJSON fue seleccionada porque proporciona endpoints diseñados específicamente para prácticas de automatización y pruebas de calidad, permitiendo validar autenticación, respuestas JSON, códigos HTTP y escenarios positivos y negativos.
+```http
+HTTP/1.1 200 OK
+Content-Type: application/json
+```
 
----
+Campos relevantes usados por el modelo de la automatización:
 
-## ⚙️ Ambiente Configurado
-
-### QA
-
-Variables configuradas en Apidog:
-
-| Variable | Valor |
-| :--- | :--- |
-| `baseUrl` | `https://dummyjson.com` |
-| `username` | `emilys` |
-| `password` | `emilyspass` |
-
----
-
-## 📁 Colección Utilizada
-
-Las pruebas API fueron almacenadas y exportadas desde Apidog mediante la colección:
-`nexosd5.apidog.json`
-
-La colección contiene los escenarios desarrollados para validar el proceso de autenticación.
-
----
-
-## 🔍 Endpoint Evaluated
-
-### Login
-* **Método:** `POST`
-* **URL:** `{{baseUrl}}/auth/login`
-
----
-
-## 🧪 Casos de Prueba
-
-### Caso de Prueba 01: Login válido
-
-* **Descripción:** Validar que un usuario registrado pueda autenticarse exitosamente.
-
-* **Request:**
 ```json
 {
-  "username": "emilys",
-  "password": "emilyspass"
+  "id": 1,
+  "title": "Essence Mascara Lash Princess",
+  "description": "The Essence Mascara Lash Princess is a popular mascara known for its volumizing and lengthening effects. Achieve dramatic lashes with this long-lasting and cruelty-free formula.",
+  "category": "beauty",
+  "price": 9.99,
+  "stock": 99,
+  "thumbnail": "https://cdn.dummyjson.com/product-images/beauty/essence-mascara-lash-princess/thumbnail.webp"
 }
 ```
 
-* **Resultado Esperado:**
-  `HTTP 200 OK`
+La API también devuelve campos adicionales, como `discountPercentage`, `rating`, `tags`, `brand`, `sku`, `dimensions`, `reviews`, `images` y `meta`. El modelo de esta prueba selecciona los campos necesarios para identificar y mostrar el producto; los campos adicionales no forman parte de `CatalogProduct`.
 
-* **Validaciones:**
-  * Código HTTP 200.
-  * Generación de accessToken.
-  * Generación de refreshToken.
-  * Retorno de información del usuario.
-  * Respuesta en formato JSON.
+### Validaciones automatizadas
 
-* **Resultado Obtenido:**
-  Caso ejecutado exitosamente.
+- La respuesta contiene un producto con `id` igual a `1`.
+- Título, descripción, categoría, precio, inventario e imagen tienen tipos válidos.
+- El precio y el inventario son mayores que cero.
+- La URL de miniatura utiliza HTTPS.
 
----
+## 4. HU01-API-02 — Agregar producto al carrito
 
-### Caso de Prueba 02: Login inválido
+### Request
 
-* **Descripción:** Validar el comportamiento del servicio cuando se envían credenciales incorrectas.
+```http
+POST https://dummyjson.com/carts/add
+Content-Type: application/json
+```
 
-* **Request:**
 ```json
 {
-  "username": "usuario_invalido",
-  "password": "123456"
+  "userId": 1,
+  "products": [
+    {
+      "id": 1,
+      "quantity": 1
+    }
+  ]
 }
 ```
 
-* **Resultado Esperado:**
-  `HTTP 400`  
-  *Credenciales inválidas*
+### Respuesta observada en Apidog
 
-* **Validaciones:**
-  * Código HTTP 400.
-  * Respuesta JSON informando error.
-  * Rechazo de autenticación.
-
-* **Resultado Obtenido:**
-  Caso ejecutado exitosamente.
-
----
-
-## 🤖 Generación de Casos con Inteligencia Artificial
-
-Se utilizó la funcionalidad de Inteligencia Artificial integrada en Apidog para generar escenarios adicionales sobre el endpoint de autenticación.
-
-La IA propuso escenarios relacionados con:
-* Credenciales válidas.
-* Credenciales inválidas.
-* Usuario vacío.
-* Contraseña vacía.
-* Campos obligatorios.
-* Validación de respuestas HTTP.
-* Manejo de errores.
-
-Estos casos fueron utilizados como apoyo para fortalecer el análisis funcional y ampliar la cobertura de pruebas.
-
----
-
-## 📸 Evidencias Generadas
-
-Durante la ejecución se obtuvieron evidencias de:
-* Configuración del entorno QA.
-* Ejecución de Login válido.
-* Ejecución de Login inválido.
-* Respuesta JSON exitosa.
-* Casos de prueba generados mediante IA.
-* Exportación de la colección.
-
-### Ubicación sugerida:
-```text
-docs/
-│
-├── API-TESTING.md
-├── AI-REPORT.md
-│
-├── apidog/
-│   └── nexosd5.apidog.json
-│
-└── evidencias/
-    ├── apidog-environment.png
-    ├── login-valido.png
-    ├── login-invalido.png
-    └── casos-generados-ia.png
+```http
+HTTP/1.1 201 Created
+Content-Type: application/json
 ```
 
----
+```json
+{
+  "id": 209,
+  "products": [
+    {
+      "id": 1,
+      "title": "Essence Mascara Lash Princess",
+      "price": 9.99,
+      "quantity": 1,
+      "total": 9.99,
+      "discountPercentage": 10.48,
+      "discountedPrice": 9,
+      "thumbnail": "https://cdn.dummyjson.com/product-images/beauty/essence-mascara-lash-princess/thumbnail.webp"
+    }
+  ],
+  "total": 9.99,
+  "discountedTotal": 9,
+  "userId": 1,
+  "totalProducts": 1,
+  "totalQuantity": 1
+}
+```
 
-## 📊 Distribución de la Solución
+### Validaciones automatizadas
 
-### Automatización UI
-* **Aplicación:** https://www.saucedemo.com
-* **Herramienta:** Playwright
-* **Cobertura:**
-  * Login.
-  * Inventario.
-  * Carrito de compras.
-  * Checkout.
-  * Compra exitosa.
+- El carrito devuelto tiene un identificador positivo y `userId` igual a `1`.
+- Incluye un producto y una unidad.
+- El producto corresponde al obtenido en HU01-API-01: id, título y precio.
+- El total del producto corresponde al precio multiplicado por la cantidad.
+- El total con descuento es positivo.
 
-### Automatización API
-* **API:** https://dummyjson.com/auth/login
-* **Herramienta:** Apidog
-* **Colección:** `nexosd5.apidog.json`
-* **Cobertura:**
-  * Login válido.
-  * Login inválido.
-  * Validación HTTP 200.
-  * Validación HTTP 400.
-  * Validación de respuestas JSON.
-  * Generación de casos mediante Inteligencia Artificial.
+## 5. Modelos y mapeo
 
----
+El cliente [dummyjson-api.client.ts](../api/dummyjson-api.client.ts) centraliza las solicitudes y transforma las respuestas externas a los modelos de [dummyjson.models.ts](../api/dummyjson.models.ts):
 
-## 📝 Conclusión
+| Modelo | Mapeo |
+|---|---|
+| `CatalogProduct` | `id`, `title`, `description`, `category`, `price`, `stock`, `thumbnail` |
+| `AddToCartRequest` | `userId` y `products[]` con `id` y `quantity` |
+| `ShoppingCart` | `id`, `userId`, `total`, `discountedTotal`, `totalProducts`, `totalQuantity` y `products[]` |
+| Producto del carrito | `id`, `title`, `price`, `quantity`, `total`, `discountedPrice`, `thumbnail` |
 
-La automatización API permitió validar el proceso de autenticación mediante servicios REST utilizando Apidog y DummyJSON. Aunque SauceDemo fue utilizado para la automatización funcional de interfaz de usuario, DummyJSON proporcionó un entorno adecuado para demostrar conceptos de pruebas API, validación de respuestas HTTP y generación asistida de casos de prueba.
+Los datos de respuesta se consideran `unknown` hasta verificar los campos y sus tipos. Las respuestas HTTP no exitosas generan un error con el código y contenido recibido; las respuestas exitosas con forma incompatible también producen un error descriptivo.
 
-La combinación de Playwright para pruebas UI, Apidog para pruebas API y GitHub Actions para CI/CD permitió construir una solución integral de automatización y aseguramiento de calidad.
+## 6. Estado de las aserciones de status HTTP
+
+Apidog registra explícitamente `200` para el `GET` y `201` para el `POST` en los resultados proporcionados.
+
+En la automatización Playwright actual, `DummyJsonApiClient` comprueba `response.ok()`, lo que acepta cualquier status HTTP exitoso, y las pruebas verifican el mapeo y contenido del payload. **Las pruebas actuales no contienen aserciones estrictas `toBe(200)` o `toBe(201)`**; por ello, los códigos anteriores se documentan como resultados observados en Apidog, no como status codes verificados explícitamente por las aserciones Playwright.
+
+## 7. Configuración
+
+- URL base por defecto: `https://dummyjson.com`.
+- Variable opcional para sobrescribirla: `DUMMYJSON_BASE_URL`.
+- Las pruebas API no requieren credenciales de SauceDemo.
+- La solicitud usa el fixture `request` de Playwright y no comparte estado de navegador con las pruebas UI.
+
+## 8. Ejecución
+
+```bash
+npx playwright test tests/api/purchase-flow.api.spec.ts --project=chromium
+```
+
+## 9. Límites conocidos
+
+- DummyJSON es un servicio público externo; disponibilidad o cambios de datos/contrato pueden afectar la suite.
+- La creación del carrito es simulada y no debe interpretarse como persistencia comercial.
+- Estos casos API no realizan una compra ni se conectan con SauceDemo.
+- Para comprobar status exactos como parte de la suite automatizada, se tendrían que exponer los status desde el cliente o validarlos directamente en las pruebas.

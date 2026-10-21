@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-21T08:55:54-05:00",
+  "generatedAt": "2026-10-21T15:57:38-05:00",
   "generatedOnPlatform": "win32",
   "projectType": "other",
   "setup": [
@@ -25,8 +25,8 @@
       "args": [
         "playwright",
         "test",
-        "tests/login.spec.ts",
-        "tests/logout.spec.ts",
+        "tests/purchase-flow.spec.ts",
+        "tests/api/purchase-flow.api.spec.ts",
         "--project=chromium"
       ],
       "verificationMethod": "test-results",
