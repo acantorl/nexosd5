@@ -11,7 +11,10 @@ export class LoginPage extends BasePage {
     super(page);
     this.usernameInput = page.getByLabel("Username");
     this.passwordInput = page.getByLabel("Password");
-    this.loginButton = page.getByRole("button", { name: "Login" });
+    /*this.loginButton = page.getByRole("button", { name: "Login" });
+     */
+
+    this.loginButton = page.getByRole("button", { name: "Loginxxx" });
   }
 
   public async open(): Promise<void> {

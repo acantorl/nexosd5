@@ -8,9 +8,7 @@ const FIRST_NAME = process.env.FIRST_NAME!;
 const LAST_NAME = process.env.LAST_NAME!;
 const POSTAL_CODE = process.env.POSTAL_CODE!;
 
-/*test.describe("HU-01: Purchase flow", () => {
- */
-test.describe("HU-01: Purchase flow - CI Test", () => {
+test.describe("HU-01: Purchase flow", () => {
   test("@smoke @critical should add a product to the cart and complete a purchase", async ({
     page,
   }) => {
