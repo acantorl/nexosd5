@@ -1,0 +1,90 @@
+{
+  "planHash": "64ec75750218fb89d534d38831c4f3780cebf1f505ffbeea34f87d595c5312be",
+  "phase": "standalone",
+  "recordedAtUtc": "2026-10-21T13:59:16.6666222Z",
+  "retryCount": 0,
+  "resetBaseline": false,
+  "complete": true,
+  "result": {
+    "setupSucceeded": true,
+    "setupDurationMs": 4669,
+    "setupFailureOutput": null,
+    "assertions": [
+      {
+        "name": "tsc-no-emit",
+        "kind": "process",
+        "verificationMethod": "exit-code",
+        "passed": true,
+        "timedOut": false,
+        "skipped": false,
+        "skippedReason": null,
+        "exitCode": 0,
+        "outputSample": "",
+        "durationMs": 2689
+      },
+      {
+        "name": "tests-pass",
+        "kind": "process",
+        "verificationMethod": "test-results",
+        "passed": true,
+        "timedOut": false,
+        "skipped": false,
+        "skippedReason": null,
+        "exitCode": 0,
+        "outputSample": "\u25C7 injected env (7) from .env.qa\r\n\r\nRunning 2 tests using 2 workers\r\n\r\n\r\n\u25C7 injected env (0) from .env.qa\r\n[1/2] [chromium] \u203A tests\\logout.spec.ts:7:5 \u203A should log out and navigate to the login page\r\n\u25C7 injected env (0) from .env.qa\r\n\r\n[2/2] [chromium] \u203A tests\\login.spec.ts:7:5 \u203A should log in and navigate to the inventory page\r\n  2 passed (3.4s)\r\n",
+        "durationMs": 5660,
+        "testResults": {
+          "testFramework": "unknown",
+          "runnerDetectedFrom": "none",
+          "testsTotal": 0,
+          "testsPassed": 0,
+          "testsFailed": 0,
+          "testsSkipped": 0,
+          "parseFailed": true
+        }
+      }
+    ],
+    "executions": [
+      {
+        "source": "setup[0]",
+        "resolvedExecutable": "C:\\Program Files\\nodejs\\npm.CMD",
+        "args": [
+          "ci"
+        ],
+        "cwd": "c:\\workspace\\js_ts\\nexosd5",
+        "env": {},
+        "prependPath": [],
+        "platform": "win32"
+      },
+      {
+        "source": "tsc-no-emit",
+        "resolvedExecutable": "C:\\Program Files\\nodejs\\npx.CMD",
+        "args": [
+          "tsc",
+          "--noEmit",
+          "--ignoreDeprecations",
+          "6.0"
+        ],
+        "cwd": "c:\\workspace\\js_ts\\nexosd5",
+        "env": {},
+        "prependPath": [],
+        "platform": "win32"
+      },
+      {
+        "source": "tests-pass",
+        "resolvedExecutable": "C:\\Program Files\\nodejs\\npx.CMD",
+        "args": [
+          "playwright",
+          "test",
+          "tests/login.spec.ts",
+          "tests/logout.spec.ts",
+          "--project=chromium"
+        ],
+        "cwd": "c:\\workspace\\js_ts\\nexosd5",
+        "env": {},
+        "prependPath": [],
+        "platform": "win32"
+      }
+    ]
+  }
+}

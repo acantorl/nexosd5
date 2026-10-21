@@ -34,7 +34,7 @@ export default defineConfig({
 
     testIdAttribute: "data-test",
 
-    trace: "on-first-retry",
+    trace: "on",
 
     screenshot: "only-on-failure",
 

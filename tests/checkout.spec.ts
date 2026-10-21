@@ -1,5 +1,5 @@
 import { test, expect } from "@playwright/test";
-import { LoginPage } from "./page-objects/login.page";
+import { LoginPage } from "../pages/login.page";
 
 const STANDARD_USER = process.env.STANDARD_USER!;
 const STANDARD_PASSWORD = process.env.STANDARD_PASSWORD!;
@@ -12,6 +12,12 @@ test.describe("HU-01: Purchase flow", () => {
   test("@smoke @critical should add a product to the cart and complete a purchase", async ({
     page,
   }) => {
+    page.on("response", async (response) => {
+      console.log(
+        `${response.request().method()} | ${response.status()} | ${response.url()}`,
+      );
+    });
+
     const loginPage = new LoginPage(page);
     await loginPage.open();
 

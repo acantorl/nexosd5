@@ -1,0 +1,37 @@
+{
+  "generatedAt": "2026-10-21T08:55:54-05:00",
+  "generatedOnPlatform": "win32",
+  "projectType": "other",
+  "setup": [
+    {
+      "command": "npm",
+      "args": ["ci"]
+    }
+  ],
+  "assertions": [
+    {
+      "name": "tsc-no-emit",
+      "kind": "process",
+      "command": "npx",
+      "args": ["tsc", "--noEmit", "--ignoreDeprecations", "6.0"],
+      "verificationMethod": "exit-code",
+      "expected": "0",
+      "timeoutSeconds": 180
+    },
+    {
+      "name": "tests-pass",
+      "kind": "process",
+      "command": "npx",
+      "args": [
+        "playwright",
+        "test",
+        "tests/login.spec.ts",
+        "tests/logout.spec.ts",
+        "--project=chromium"
+      ],
+      "verificationMethod": "test-results",
+      "expected": "0",
+      "timeoutSeconds": 180
+    }
+  ]
+}

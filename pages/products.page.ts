@@ -6,12 +6,16 @@ export class ProductsPage extends BasePage {
   public readonly title: Locator;
   public readonly shoppingCartLink: Locator;
   public readonly shoppingCartBadge: Locator;
+  public readonly menuButton: Locator;
+  public readonly logoutButton: Locator;
 
   constructor(page: Page) {
     super(page);
     this.title = page.locator('.title');
     this.shoppingCartLink = page.locator('.shopping_cart_link');
     this.shoppingCartBadge = page.locator('.shopping_cart_badge');
+    this.menuButton = page.getByRole('button', { name: 'Open Menu' });
+    this.logoutButton = page.getByRole('button', { name: 'Logout' });
   }
 
   public async addProductByName(productName: string): Promise<void> {
@@ -26,6 +30,14 @@ export class ProductsPage extends BasePage {
   public async openCart(): Promise<CartPage> {
     await this.shoppingCartLink.click();
     return new CartPage(this.page);
+  }
+
+  public async openMenu(): Promise<void> {
+    await this.menuButton.click();
+  }
+
+  public async logout(): Promise<void> {
+    await this.logoutButton.click();
   }
 
   public async getCartItemsCount(): Promise<number> {
